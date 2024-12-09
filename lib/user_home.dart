@@ -1,40 +1,43 @@
 // lib/user_home.dart
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'service_providers_screen.dart';
+import 'ac_technicians_screen.dart';
+import 'electricians_screen.dart';
+import 'plumbers_screen.dart';
+// Add other service screens here.
 
 class UserHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Services'),
+        title: const Text('Services'),
       ),
       body: GridView.count(
         crossAxisCount: 2,
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         children: [
-          _buildServiceIcon(context, 'AC Technicians', Icons.ac_unit, 'AC Technicians'),
-          _buildServiceIcon(context, 'Electricians', Icons.electrical_services, 'Electricians'),
-          _buildServiceIcon(context, 'Plumbers', Icons.plumbing, 'Plumbers'),
-          _buildServiceIcon(context, 'Mechanics', Icons.build, 'Mechanics'),
-          _buildServiceIcon(context, 'Carpenters', Icons.chair, 'Carpenters'),
-          _buildServiceIcon(context, 'Technicians', Icons.engineering, 'Technicians'),
-          _buildServiceIcon(context, 'Cleaning & Pest Control', Icons.cleaning_services, 'Cleaning & Pest Control'),
-          _buildServiceIcon(context, 'Home Appliances Repair', Icons.home_repair_service, 'Home Appliances Repair'),
-          _buildServiceIcon(context, 'Building Painting', Icons.format_paint, 'Building Painting'),
-          _buildServiceIcon(context, 'Other Services', Icons.miscellaneous_services, 'Other Services'),
+          _buildServiceIcon(context, 'AC Technicians', Icons.ac_unit, AcTechniciansScreen()),
+          _buildServiceIcon(context, 'Electricians', Icons.electrical_services, ElectriciansScreen()),
+          _buildServiceIcon(context, 'Plumbers', Icons.plumbing, PlumbersScreen()),
+          _buildServiceIcon(context, 'Mechanics', Icons.build, MechanicsScreen()),
+          _buildServiceIcon(context, 'Carpenters', Icons.chair, CarpentersScreen()),
+          _buildServiceIcon(context, 'Technicians', Icons.engineering, TechniciansScreen()),
+          _buildServiceIcon(context, 'Cleaning & Pest Control', Icons.cleaning_services, CleaningAndPestControlScreen()),
+          _buildServiceIcon(context, 'Home Appliances Repair', Icons.home_repair_service, HomeAppliancesRepairScreen()),
+          _buildServiceIcon(context, 'Building Painting', Icons.format_paint, BuildingPaintingScreen()),
+          _buildServiceIcon(context, 'Other Services', Icons.miscellaneous_services, OtherServicesScreen()),
         ],
       ),
     );
   }
 
-  Widget _buildServiceIcon(BuildContext context, String label, IconData icon, String serviceType) {
+  Widget _buildServiceIcon(BuildContext context, String label, IconData icon, Widget screen) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ServiceProvidersScreen(serviceType: serviceType),
+          builder: (context) => screen,
         ),
       ),
       child: Card(

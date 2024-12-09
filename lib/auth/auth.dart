@@ -35,7 +35,7 @@ class Authpage extends StatelessWidget {
     String role = await getUserRole(user.email!);
 
     return switch (role) {
-      'User' => const UserHome(),
+      'User' =>  UserHome(),
       'Admin' => const AdminHome(),
       'Service' =>  ServiceHome(),
       _ => const SplashScreen() // Redirect to SplashScreen if the role is undefined

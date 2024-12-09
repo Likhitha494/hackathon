@@ -54,6 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (context.mounted) {
         Navigator.pop(context);
         displayMessageToUser('Registration successful!');
+
       }
     } on FirebaseAuthException catch (e) {
       String message;

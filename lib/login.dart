@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
         homePage = const AdminHome();
         break;
       case 'Service':
-        homePage = const ServiceHome();
+        homePage =  ServiceHome();
         break;
       default:
         _displayMessageToUser('User role not found.');

@@ -100,7 +100,7 @@ class _ServiceHomeState extends State<ServiceHome> {
 
           // Show success message
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Service request submitted successfully')));
+              const SnackBar(content: Text('Service request submitted successfully')));
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Error: $e')));
@@ -115,7 +115,7 @@ class _ServiceHomeState extends State<ServiceHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Service Home'),
+        title: const Text('Service Home'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

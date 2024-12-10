@@ -103,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Lottie animation
-                      Text("hello"),
+                      Text("VAP Team"),
                       const SizedBox(height: 20),
                       // Title
                       Text(

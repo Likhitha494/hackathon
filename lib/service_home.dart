@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hackathon/slpash_screen.dart';
 
 class ServiceHome extends StatefulWidget {
   @override
@@ -100,6 +101,7 @@ class _ServiceHomeState extends State<ServiceHome> {
             'amount': _amountController.text,
             'time': _timeController.text,
             'location': _locationController.text,
+            'contact': _contactNumberController.text  // Corrected this line
           });
 
           // Show success message
@@ -114,12 +116,22 @@ class _ServiceHomeState extends State<ServiceHome> {
       print('No user is signed in.');
     }
   }
+  void _logout() async {
+    await FirebaseAuth.instance.signOut(); // Sign out the user
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => SplashScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Service Home'),
+        actions: [
+          IconButton(
+              onPressed: _logout,
+              icon: Icon(Icons.logout)),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

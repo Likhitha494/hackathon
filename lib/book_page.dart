@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart'; // Import the url_launcher package
 
 class BookingPage extends StatelessWidget {
   final String name;
@@ -14,6 +15,17 @@ class BookingPage extends StatelessWidget {
     required this.description,
     required this.email, // Initialize email
   });
+
+  // Function to send SMS using url_launcher
+  Future<void> _sendSms(String message) async {
+    final String phoneNumber = contact; // Replace with actual phone number or dynamically use a contact
+    final Uri smsUri = Uri.parse('sms:$phoneNumber?body=$message');
+    if (await canLaunch(smsUri.toString())) {
+      await launch(smsUri.toString());
+    } else {
+      throw 'Could not launch SMS';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +53,21 @@ class BookingPage extends StatelessWidget {
             .collection('TemporaryBookings')
             .doc(email) // Use email as the document ID
             .set(bookingDetails);
+
+        // Send SMS with the booking details
+        final smsContent = '''
+Booking Details:
+Technician: $name
+Contact: $contact
+Description: $description
+Preferred Date: ${dateController.text}
+Preferred Time: ${timeController.text}
+Problem Location: ${locationController.text}
+Problem Description: ${problemDescriptionController.text}
+''';
+
+        // Launch SMS app with the formatted message
+        _sendSms(smsContent);
 
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(

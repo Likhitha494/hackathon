@@ -134,7 +134,42 @@ class _ServiceHomeState extends State<ServiceHome> with TickerProviderStateMixin
       }
     }
   }
+  Future<void> _submitForm() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      String? email = user.email;  // Get the current user's email
+      print('User email: $email');
 
+      // If email is not null or empty, proceed with submitting the service request
+      if (_formKey.currentState!.validate()) {
+        try {
+          // If the email is available, proceed to submit service request
+          DocumentReference serviceDoc = FirebaseFirestore.instance
+              .collection(_selectedService)  // Collection based on service type
+              .doc(email);  // Use email as the document ID
+
+          // Set the service request data with user's email
+          await serviceDoc.set({
+            'email': email,  // Store email as a field
+            'description': _descriptionController.text,
+            'amount': _amountController.text,
+            'time': _timeController.text,
+            'location': _locationController.text,
+            'contact': _contactNumberController.text  // Corrected this line
+          });
+
+          // Show success message
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Service request submitted successfully')));
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error: $e')));
+        }
+      }
+    } else {
+      print('No user is signed in.');
+    }
+  }
   // Function to send SMS for booking confirmation
   Future<void> _sendConfirmationMessage(String contact) async {
     final Uri smsUrl = Uri(
@@ -355,12 +390,5 @@ class _ServiceHomeState extends State<ServiceHome> with TickerProviderStateMixin
         ],
       ),
     );
-  }
-
-  // Handle form submission
-  void _submitForm() {
-    if (_formKey.currentState?.validate() ?? false) {
-      // Process data and save to Firestore or another action
-    }
   }
 }

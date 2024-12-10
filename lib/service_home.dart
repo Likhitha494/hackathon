@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +12,8 @@ class ServiceHome extends StatefulWidget {
 
 class _ServiceHomeState extends State<ServiceHome> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController=TextEditingController();
+  final _contactNumberController=TextEditingController();
   final _descriptionController = TextEditingController();
   final _amountController = TextEditingController();
   final _timeController = TextEditingController();
@@ -142,6 +146,30 @@ class _ServiceHomeState extends State<ServiceHome> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select a service type';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(labelText: 'Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _contactNumberController,
+                decoration: InputDecoration(labelText: 'Contact Number'),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your contact number';
+                  }
+                  if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                    return 'Please enter a valid 10-digit contact number';
                   }
                   return null;
                 },

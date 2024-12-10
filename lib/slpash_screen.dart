@@ -16,8 +16,8 @@ class _SplashScreenState extends State<SplashScreen> {
   final List<Map<String, String>> content = [
     {
       'animation': 'assets/1.json', // Replace with valid Lottie asset paths
-      'title': 'Hello, I’m Judica your Legal Assistant.',
-      'paragraph': 'My mission is to make sure everyone gets the support they need in the legal system. Whether you’re seeking advice, looking for guidance on bail, or need a quick understanding of legal terms, I’m here to help.'
+      'title': 'Hello, I’m ZETAONE ,Your Trusted Partner for Services.',
+      'paragraph': 'My mission is to streamline maintenance tasks with easy scheduling, real-time updates, and reminders. It’s your go-to tool for staying organized and ensuring top-notch service, anytime and anywhere.'
     },
     {
       'animation': 'assets/2.json',

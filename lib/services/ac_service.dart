@@ -131,19 +131,6 @@ class AcTechniciansScreen extends StatelessWidget {
               },
               child: Text('Call'),
             ),
-            TextButton(
-              onPressed: () async {
-                final uri = Uri.parse('mailto:$email'); // Send email when clicked
-                if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Unable to send an email')),
-                  );
-                }
-              },
-              child: Text('Email'),
-            ),
           ],
         );
       },

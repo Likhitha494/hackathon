@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:url_launcher/url_launcher.dart'; // Import the url_launcher package
+import 'package:url_launcher/url_launcher.dart';
+import 'payment_page.dart'; // Import the PaymentPage
 
 class BookingPage extends StatelessWidget {
   final String name;
   final String contact;
   final String description;
-  final String email; // Added email as a parameter
+  final String email;
 
   const BookingPage({
     super.key,
     required this.name,
     required this.contact,
     required this.description,
-    required this.email, // Initialize email
+    required this.email,
   });
 
   // Function to send SMS using url_launcher
   Future<void> _sendSms(String message) async {
-    final String phoneNumber = contact; // Replace with actual phone number or dynamically use a contact
+    final String phoneNumber = contact;
     final Uri smsUri = Uri.parse('sms:$phoneNumber?body=$message');
     if (await canLaunch(smsUri.toString())) {
       await launch(smsUri.toString());
@@ -34,6 +35,9 @@ class BookingPage extends StatelessWidget {
     final TextEditingController locationController = TextEditingController();
     final TextEditingController problemDescriptionController =
     TextEditingController();
+
+    // Dummy amount for the payment page
+    final String totalAmount = '\$50.00'; // This can be calculated based on various factors
 
     void submitBooking() async {
       final bookingDetails = {
@@ -51,7 +55,7 @@ class BookingPage extends StatelessWidget {
         // Store booking details in Firestore using email as document ID
         await FirebaseFirestore.instance
             .collection('TemporaryBookings')
-            .doc(email) // Use email as the document ID
+            .doc(email)
             .set(bookingDetails);
 
         // Send SMS with the booking details
@@ -66,21 +70,31 @@ Problem Location: ${locationController.text}
 Problem Description: ${problemDescriptionController.text}
 ''';
 
-        // Launch SMS app with the formatted message
         _sendSms(smsContent);
 
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Booking submitted successfully!')),
         );
-
-        Navigator.pop(context); // Navigate back to the previous screen
       } catch (e) {
         // Handle errors
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to submit booking: $e')),
         );
       }
+    }
+
+    void goToPaymentPage() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PaymentPage(
+            technicianName: name,
+            totalAmount: totalAmount,
+            submitBooking: submitBooking, // Pass submitBooking function to PaymentPage
+          ),
+        ),
+      );
     }
 
     return Scaffold(
@@ -145,8 +159,8 @@ Problem Description: ${problemDescriptionController.text}
             const SizedBox(height: 16),
             Center(
               child: ElevatedButton(
-                onPressed: submitBooking,
-                child: const Text('Submit Booking'),
+                onPressed: goToPaymentPage, // Navigate to PaymentPage
+                child: const Text('Proceed to Payment'),
               ),
             ),
           ],

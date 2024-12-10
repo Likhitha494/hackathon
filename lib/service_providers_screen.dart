@@ -1,11 +1,10 @@
-// lib/service_providers_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ServiceProvidersScreen extends StatelessWidget {
   final String serviceType;
 
-  ServiceProvidersScreen({required this.serviceType});
+  const ServiceProvidersScreen({Key? key, required this.serviceType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,35 +12,54 @@ class ServiceProvidersScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(serviceType),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('Service Type') // Correct collection name
-            .where('serviceType', isEqualTo: serviceType)
-            .snapshots(),
+      body: FutureBuilder<QuerySnapshot>(
+        future: FirebaseFirestore.instance
+            .collection('AcTechnicians')
+            .get(),
         builder: (context, snapshot) {
+          // Check connection state
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No service details found'));
+
+          // Check for errors
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
           }
 
-          final serviceDetails = snapshot.data!.docs;
+          // Check if data exists
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Text('No service providers found'),
+            );
+          }
+
+          // Get the documents
+          final serviceProviders = snapshot.data!.docs;
 
           return ListView.builder(
-            itemCount: serviceDetails.length,
+            itemCount: serviceProviders.length,
             itemBuilder: (context, index) {
-              var service = serviceDetails[index];
+              // Get the document data
+              final provider = serviceProviders[index].data() as Map<String, dynamic>;
+
               return Card(
                 margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: ListTile(
-                  title: Text(service['serviceType']),
+                  title: Text(
+                    provider['name'] ?? 'AC Technician',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Description: ${service['workDescription']}'),
-                      Text('Time of Work: ${service['timeOfWork']}'),
-                      Text('Amount: \$${service['amount']}'),
+                      Text('Amount: \$${provider['amount']}'),
+                      Text('Description: ${provider['description']}'),
+                      Text('Email: ${provider['email']}'),
+                      Text('Location: ${provider['location']}'),
+                      Text('Time: ${provider['time']}'),
                     ],
                   ),
                 ),

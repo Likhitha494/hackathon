@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../book_page.dart';
 
 class AcTechniciansScreen extends StatelessWidget {
   @override
@@ -9,7 +12,8 @@ class AcTechniciansScreen extends StatelessWidget {
         title: Text('AC Technicians'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('AC technicians').snapshots(),
+        stream: FirebaseFirestore.instance.collection('AC technicians')
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -23,7 +27,6 @@ class AcTechniciansScreen extends StatelessWidget {
             );
           }
 
-          // Extracting documents from snapshot
           final technicians = snapshot.data!.docs;
 
           return ListView.builder(
@@ -32,7 +35,7 @@ class AcTechniciansScreen extends StatelessWidget {
               final technician = technicians[index];
               final data = technician.data() as Map<String, dynamic>;
               final name = data['name'] ?? 'Unknown';
-              final contact = data['contact'] ?? 'No contact info'; // Assumes "contact" is a field
+              final contact = data['contact'] ?? 'No contact info';
               final description = data['description'] ?? 'No description';
               final amount = data['amount'] ?? 'No amount';
               final time = data['time'] ?? 'No time';
@@ -42,7 +45,8 @@ class AcTechniciansScreen extends StatelessWidget {
                 elevation: 4.0,
                 margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: ListTile(
-                  title: Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text(
+                      name, style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -53,12 +57,83 @@ class AcTechniciansScreen extends StatelessWidget {
                       Text('Location: $location'),
                     ],
                   ),
+                  onTap: () {
+                    _showDetailsDialog(
+                      context,
+                      name,
+                      contact,
+                      description,
+                      amount,
+                      time,
+                      location,
+                    );
+                  },
                 ),
               );
             },
           );
         },
       ),
+    );
+  }
+
+  void _showDetailsDialog(BuildContext context,
+      String name,
+      String contact,
+      String description,
+      String amount,
+      String time,
+      String location,) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(name),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Contact: $contact'),
+              Text('Description: $description'),
+              Text('Amount: $amount'),
+              Text('Time: $time'),
+              Text('Location: $location'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        BookingPage(
+                          name: name,
+                          contact: contact,
+                          description: description,
+                        ),
+                  ),
+                );
+              },
+              child: Text('Book'),
+            ),
+            TextButton(
+              onPressed: () async {
+                final uri = Uri.parse('tel:$contact');
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Unable to make a call')),
+                  );
+                }
+              },
+              child: Text('Call'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

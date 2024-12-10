@@ -79,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/Background.jpg'), // Replace with your background image path
+                image: AssetImage('assets/Background1.jpg'), // Replace with your background image path
                 fit: BoxFit.cover,
               ),
             ),
@@ -103,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Lottie animation
-                      Text("hello"),
+                      Text("VAP Team"),
                       const SizedBox(height: 20),
                       // Title
                       Text(
@@ -122,7 +122,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         child: Text(
                           content[index]['paragraph']!,
                           style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 20,
                             color: Colors.black54,
                           ),
                           textAlign: TextAlign.center,
@@ -135,7 +135,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
+                          backgroundColor: Colors.black,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(
                             vertical: 12,

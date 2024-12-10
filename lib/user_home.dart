@@ -1,17 +1,42 @@
 // lib/user_home.dart
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'ac_technicians_screen.dart';
-import 'electricians_screen.dart';
-import 'plumbers_screen.dart';
+import 'package:hackathon/services/ac_service.dart';
+import 'package:hackathon/services/building_painting.dart';
+import 'package:hackathon/services/carpenters.dart';
+import 'package:hackathon/services/cleaning__pest_control.dart';
+import 'package:hackathon/services/electricians.dart';
+import 'package:hackathon/services/home_appliances_repair.dart';
+import 'package:hackathon/services/mechanics.dart';
+import 'package:hackathon/services/other_services.dart';
+import 'package:hackathon/services/plumbers.dart';
+import 'package:hackathon/services/technicians.dart';
+import 'package:hackathon/slpash_screen.dart';
 // Add other service screens here.
 
-class UserHome extends StatelessWidget {
+class UserHome extends StatefulWidget {
+  @override
+  State<UserHome> createState() => _UserHomeState();
+}
+
+class _UserHomeState extends State<UserHome> {
+  void _logout() async {
+    await FirebaseAuth.instance.signOut(); // Sign out the user
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => SplashScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Services'),
+        actions: [
+          IconButton(
+              onPressed: _logout,
+              icon: Icon(Icons.logout)),
+        ],
       ),
       body: GridView.count(
         crossAxisCount: 2,

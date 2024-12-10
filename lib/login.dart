@@ -155,13 +155,13 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Judica"),
-        backgroundColor: const Color.fromRGBO(255, 165, 89, 1),
+        title: const Text("Judica",style: TextStyle(color:Colors.white)),
+        backgroundColor: const Color.fromRGBO(23, 21, 21, 1.0),
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/Background.jpg', fit: BoxFit.cover),
+          Image.asset('assets/Background2.jpg', fit: BoxFit.cover),
           SingleChildScrollView(
             padding: const EdgeInsets.only(top: 150.0, left: 10, right: 10),
             child: Column(
@@ -250,12 +250,12 @@ class _LoginPageState extends State<LoginPage> {
       child: ElevatedButton(
         onPressed: login,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromRGBO(251, 146, 60, 1),
+          backgroundColor: const Color.fromRGBO(23, 21, 21, 1.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
         ),
-        child: const Text('Log In →', style: TextStyle(fontSize: 18)),
+        child: const Text('Log In →', style: TextStyle(fontSize: 18,color:Colors.white)),
       ),
     );
   }

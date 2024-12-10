@@ -45,12 +45,11 @@ class AcTechniciansScreen extends StatelessWidget {
                 elevation: 4.0,
                 margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: ListTile(
-                  title: Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text(description, style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Contact: $contact'),
-                      Text('Description: $description'),
                       Text('Amount: $amount'),
                       Text('Time: $time'),
                       Text('Location: $location'),

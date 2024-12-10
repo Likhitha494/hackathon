@@ -12,8 +12,7 @@ class AcTechniciansScreen extends StatelessWidget {
         title: Text('AC Technicians'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('AC technicians')
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('AC technicians').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -40,13 +39,13 @@ class AcTechniciansScreen extends StatelessWidget {
               final amount = data['amount'] ?? 'No amount';
               final time = data['time'] ?? 'No time';
               final location = data['location'] ?? 'No location';
+              final email = data['email'] ?? 'No email';
 
               return Card(
                 elevation: 4.0,
                 margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: ListTile(
-                  title: Text(
-                      name, style: TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -66,6 +65,7 @@ class AcTechniciansScreen extends StatelessWidget {
                       amount,
                       time,
                       location,
+                      email, // Pass email here
                     );
                   },
                 ),
@@ -83,7 +83,8 @@ class AcTechniciansScreen extends StatelessWidget {
       String description,
       String amount,
       String time,
-      String location,) {
+      String location,
+      String email) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -107,12 +108,12 @@ class AcTechniciansScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        BookingPage(
-                          name: name,
-                          contact: contact,
-                          description: description,
-                        ),
+                    builder: (context) => BookingPage(
+                      name: name,
+                      contact: contact,
+                      description: description,
+                      email: email, // Pass email to the booking page
+                    ),
                   ),
                 );
               },
@@ -130,6 +131,19 @@ class AcTechniciansScreen extends StatelessWidget {
                 }
               },
               child: Text('Call'),
+            ),
+            TextButton(
+              onPressed: () async {
+                final uri = Uri.parse('mailto:$email'); // Send email when clicked
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Unable to send an email')),
+                  );
+                }
+              },
+              child: Text('Email'),
             ),
           ],
         );

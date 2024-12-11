@@ -107,8 +107,8 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Judica"),
-        backgroundColor: const Color.fromRGBO(255, 165, 89, 1),
+        title: const Text("VAP Team",style:TextStyle(color:Colors.white)),
+        backgroundColor: const Color.fromRGBO(23, 21, 21, 1.0),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: AbsorbPointer(
@@ -118,7 +118,7 @@ class _RegisterPageState extends State<RegisterPage> {
           children: [
             Positioned.fill(
               child: Image.asset(
-                'assets/Background.jpg',
+                'assets/Background1.jpg',
                 fit: BoxFit.cover,
               ),
             ),
@@ -264,7 +264,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ),
-        items: ['User', 'Admin', 'Service']
+        items: ['User','Service']
             .map((role) => DropdownMenuItem(value: role, child: Text(role)))
             .toList(),
       ),
@@ -278,7 +278,7 @@ class _RegisterPageState extends State<RegisterPage> {
       child: ElevatedButton(
         onPressed: isLoading ? null : register,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromRGBO(255, 125, 41, 1),
+          backgroundColor: const Color.fromRGBO(23, 21, 21, 1.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

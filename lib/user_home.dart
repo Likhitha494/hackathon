@@ -71,7 +71,7 @@ class _UserHomeState extends State<UserHome> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 48.0, color: Colors.blue),
+            Icon(icon, size: 48.0, color: Colors.black),
             SizedBox(height: 8.0),
             Text(
               label,

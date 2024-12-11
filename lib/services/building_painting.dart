@@ -53,6 +53,7 @@ class BuildingPaintingScreen extends StatelessWidget {
                       Text('Location: $location'),
                     ],
                   ),
+
                 ),
               );
             },

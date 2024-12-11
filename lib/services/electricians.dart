@@ -53,6 +53,7 @@ class ElectriciansScreen extends StatelessWidget {
                       Text('Location: $location'),
                     ],
                   ),
+
                 ),
               );
             },
